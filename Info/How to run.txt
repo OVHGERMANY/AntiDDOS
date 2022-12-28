@@ -1,0 +1,15 @@
+To run this script, follow these steps:
+
+1. Drag and drop all of the script files into the desired directory.
+2. Run the following command to give the script files execute permission:
+   chmod 777 *
+3. Run the f2b.sh script:
+   ./f2b.sh
+4. Run the run.sh script:
+   ./run.sh
+5. Follow the prompts to update your IP address and configure the DDoS protection script.
+6. To start the traffic monitor, run the following command:
+   ./traffic_monitor.sh -i INTERFACE -t INTERVAL
+   Replace "INTERFACE" with the name of the network interface you want to monitor (e.g. "eth0") and "INTERVAL" with the number of seconds between updates (e.g. "1").
+
+Note: This script has been tested on Ubuntu 20.04, but it may not work on other operating systems or versions. It is still in development and you may encounter issues.

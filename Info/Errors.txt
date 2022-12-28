@@ -1,0 +1,26 @@
+Possible Errors:
+
+Iptables Error: "/sbin/iptables: Symbol `xtables_chain_protos' has different size in shared object, consider re-linking"
+This error may occur if there is a mismatch between the version of iptables that is installed on your system and the version of iptables that the script is expecting. To fix this error, try re-linking the iptables shared object file. To do this, run the following command:
+
+Copy code:
+sudo ldconfig -v | grep iptables
+This will output the location of the iptables shared object file. Then, run the following command to re-link the file:
+
+Copy code:
+sudo ldconfig /path/to/xtables.so
+Replace /path/to/xtables.so with the actual path to the xtables shared object file that was output by the previous command.
+
+Iptables Error: "Will get error and script will kill its self but option still works"
+This error may occur if there is an issue with the iptables rules that the script is trying to apply. To fix this error, try manually resetting the iptables rules by running the following commands:
+
+Copy code:
+iptables -F
+iptables -X
+iptables -Z
+iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+This will clear all the existing iptables rules and set the default policy for all chains to ACCEPT. Then, try running the script again to see if the error persists.
+
+Please let me know if you encounter any other errors, or if you have any questions. @bots.syn
