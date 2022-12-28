@@ -10,7 +10,7 @@ MAX_CONNECTIONS=100
 RESET_TIME=300
 
 # Set the IP address of the user to whitelist
-WHITELISTED_IP=70.118.215.105
+WHITELISTED_IP=128.0.0.1
 
 # Flush existing iptables rules
 iptables -F
