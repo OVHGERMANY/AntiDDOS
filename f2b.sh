@@ -2,7 +2,7 @@
 
 # Display a banner with the script name and version
 echo "OVHGERMANY Anti-DDoS Script"
-echo "Version 0.7b"
+echo "Version 0.8b"
 echo
 
 # Install fail2ban
