@@ -6,7 +6,7 @@ DDOS_SCRIPT=ddos.sh
 # Display a banner with the text "Made by OVHGERMANY" and "Version 0.7 Beta"
 echo "#############################################"
 echo "# Made by OVHGERMANY/@bots.syn             #"
-echo "# Version 0.7 Beta                         #"
+echo "# Version 0.8 Beta                         #"
 echo "#############################################"
 echo
 
