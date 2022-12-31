@@ -1,3 +1,5 @@
+Discontenued 
+
 0.8 Beta -
 Added additional iptables rules to protect against common DDoS attack methods, including SYN floods, UDP floods, and traffic with invalid TCP flags, invalid IP options, and invalid TCP options
 
