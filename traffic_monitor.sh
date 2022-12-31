@@ -30,7 +30,7 @@ done
 log_file=/var/log/traffic_monitor.log
 
 # Display the banner with your name and version
-echo "OVHGERMANY Traffic Monitor - Version 0.7b"
+echo "OVHGERMANY Traffic Monitor - Version 0.8b"
 
 while true
 do
@@ -59,7 +59,7 @@ do
 
   # Clear the output and display the incoming and outgoing traffic
   clear
-  echo "OVHGERMANY Traffic Monitor - Version 0.7b"
+  echo "OVHGERMANY Traffic Monitor - Version 0.8b"
   if [[ "$incoming_unit" == "GB" ]] || [[ "$outgoing_unit" == "GB" ]]; then
     echo -e "\033[31mUnderattack Or Downloading Something\033[0m"
   fi
