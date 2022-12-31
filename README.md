@@ -1,3 +1,5 @@
+#Discontenued!! 
+
 # AntiDDOS
 Welcome to my project! This project is an anti-DDoS script that aims to protect websites and servers from distributed denial of service attacks. It has been developed using Bash and iptables, and is intended for use by server administrators and website owners.
 
