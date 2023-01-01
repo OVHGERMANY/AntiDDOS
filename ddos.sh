@@ -10,7 +10,7 @@ MAX_CONNECTIONS=100
 RESET_TIME=300
 
 # Set the IP address of the user to whitelist
-WHITELISTED_IP=70.118.215.105
+WHITELISTED_IP=127.0.0.1
 
 # Allow established connections
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
