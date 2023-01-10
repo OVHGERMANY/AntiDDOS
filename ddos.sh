@@ -10,7 +10,7 @@ MAX_CONNECTIONS=100
 RESET_TIME=300
 
 # Set the IP address of the user to whitelist
-WHITELISTED_IP=127.0.0.1
+WHITELISTED_IP=1.1.1.1
 
 # Allow established connections
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
@@ -46,7 +46,13 @@ iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
 iptables -A INPUT -m ipoption --ipopt-type any -j DROP
 
 # Block traffic with invalid TCP options
-iptables -A INPUT -p tcp --tcp-option 10 -j DROP
+iptables -A INPUT -p tcp --tcp-options ALL NONE -j DROP
+iptables -A INPUT -p tcp --tcp-options SYN,RST SYN,RST -j DROP
+
+# Block packets with spoofed IPs
+iptables -A INPUT -s 10.0.0.0/8 -j DROP
+iptables -A INPUT -s 172.16.0.0/12 -j DROP
+iptables -A INPUT -s 192.168.0.0/16 -j DROP
 
 # Allow all other traffic
 iptables -A INPUT -j ACCEPT
