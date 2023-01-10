@@ -1,37 +1,13 @@
-Discontenued 
+1.0 -
+Added additional iptables rules to protect against common DDoS attack methods, including SYN floods, UDP floods, and traffic with invalid TCP flags, invalid IP options, invalid TCP options, and packets with spoofed IPs from 10.0.0.0/8, 172.16.0.0/12, and 192.168.0.0/16 networks. Additionally, the fail2ban configuration file and filter file were updated to log session opened for user and to monitor /var/log/auth.log instead of /root, with an additional line added to the filter rules to detect when a session is opened for a user. Furthermore, my own traffic moniter was substituted for nload, as the former was producing incorrect traffic.
+
+
+0.9 Beta -
+Added AutoInstaller
+Added Someother stuff
 
 0.8 Beta -
 Added additional iptables rules to protect against common DDoS attack methods, including SYN floods, UDP floods, and traffic with invalid TCP flags, invalid IP options, and invalid TCP options
-
-0.7 Beta -
-Added a fail2ban system
-Added a clear function
-Added and fixed the traffic monitor
-Added an option to remove an IP address from the whitelist
-Added confirmation prompts and error messages for each option
-
-0.6 Beta -
-Updated AntiDDOS into ddos.sh
-Added more options
-Added encounter errors log
-
-0.5 Beta -
-Readded traffic monitor
-Encoded the very secret code
-
-0.4 Beta -
-Removed a bunch of stuff because my tiny brain is too small and don't know how to code very well, so anyways I recoded it in bash
-
-0.3 Beta -
-Added a traffic logger to replace the paid logger
-Fixed the myip issue
-
-0.2 Beta -
-Recoded it in Python
-Removed paid logger
-
-0.1 Beta -
-ANTIDDOS script
 
 0.7 Beta -
 Added a fail2ban system
