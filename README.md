@@ -30,3 +30,29 @@ To run this script, follow these steps:
 Note: This script has been tested on Ubuntu 20.04, but it may not work on other operating systems or versions. It is still in development and you may encounter issues.
 
 To configure the script, open the file in a text editor and follow the instructions in the comments.
+
+
+## Advanced Monitoring Module
+
+A new monitor script (`monitor.sh`) samples traffic every N seconds and reports:
+
+- Packets/sec and bytes/sec by protocol (TCP, UDP, ICMP)
+- New TCP connections/sec (SYN rate)
+- Top source IPs over each sample snapshot
+- Rolling trend/burst detection over the last 10 samples
+
+### Usage
+
+```bash
+./monitor.sh --interface eth0 --interval 1 --top 10
+```
+
+Optional flags:
+
+- `--json` to emit JSON to stdout (JSON lines are always written to `/var/log/antiddos/events.log`, with fallback to `./events.log` when permissions are missing).
+- `--interface` to choose interface.
+- `--interval` to set sample interval in seconds.
+- `--top` to choose how many source IPs to display.
+
+The script prefers iptables raw-table counters for protocol/SYN metrics and gracefully falls back to conntrack + `/proc` stats when iptables access is unavailable.
+
