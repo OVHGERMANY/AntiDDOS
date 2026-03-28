@@ -1,0 +1,22 @@
+[Unit]
+Description=AntiDDoS Monitor Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/antiddos
+Environment=ANTIDDOS_CONFIG=/opt/antiddos/config/antiddos.conf
+ExecStart=/opt/antiddos/antiddos.sh start
+Restart=always
+RestartSec=5
+
+# Hardening (tune for your host)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
