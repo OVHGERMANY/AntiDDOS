@@ -1,32 +1,139 @@
-# Discontinued
-
 # AntiDDOS
-Welcome to my project! This project is an anti-DDoS script that aims to protect websites and servers from distributed denial of service attacks. It has been developed using Bash and iptables, and is intended for use by server administrators and website owners.
 
-The script includes features such as a whitelist for trusted IP addresses, the ability to reset iptables rules, and the ability to add and remove IP addresses from the whitelist. It also includes a traffic monitor that displays incoming and outgoing traffic in real-time, and can alert the user if the traffic exceeds a specified threshold.
+A Bash-based anti-DDoS toolkit with a single entrypoint script (`antiddos.sh`) that supports monitoring, detection, mitigation, simulation, and operational status reporting.
 
-I hope you find this script useful in protecting your website or server from DDoS attacks. Please don't hesitate to leave feedback or suggestions. Thank you for checking out my project!
+> `run.sh` is deprecated for interactive edits. Configuration is now file-driven.
 
-# Install
+## Quick start
 
-Visit the project page on GitHub and click the "Clone or download" button.
+1. Clone/download this repository.
+2. Make scripts executable:
+   ```bash
+   chmod +x antiddos.sh run.sh
+   ```
+3. Create/edit config:
+   ```bash
+   cp config/antiddos.conf.example config/antiddos.conf
+   $EDITOR config/antiddos.conf
+   ```
+4. Validate:
+   ```bash
+   ./antiddos.sh config validate
+   ```
+5. Start protection loop:
+   ```bash
+   ./antiddos.sh start
+   ```
 
-Choose to either "Download ZIP" or clone the repository using Git. If you choose to clone the repository, open a terminal and enter the following command: git clone https://github.com/OVHGERMANY/AntiDDOS.git
+## Main entry script
 
-To run this script, follow these steps:
+The main operational interface is:
 
-1. Drag and drop all of the script files into the desired directory.
-2. Run the following command to give the script files execute permission:
-   chmod 777 *
-3. Run the f2b.sh script:
-   ./f2b.sh
-4. Run the run.sh script:
-   ./run.sh
-5. Follow the prompts to update your IP address and configure the DDoS protection script.
-6. To start the traffic monitor, run the following command:
-   ./traffic_monitor.sh -i INTERFACE -t INTERVAL
-   Replace "INTERFACE" with the name of the network interface you want to monitor (e.g. "eth0") and "INTERVAL" with the number of seconds between updates (e.g. "1").
+```bash
+./antiddos.sh <subcommand>
+```
 
-Note: This script has been tested on Ubuntu 20.04, but it may not work on other operating systems or versions. It is still in development and you may encounter issues.
+### Subcommands
 
-To configure the script, open the file in a text editor and follow the instructions in the comments.
+#### `start`
+Starts the monitor + detect + mitigate loop.
+
+Detection signals include:
+- RX byte delta above `RX_THRESHOLD_BYTES`
+- Top source connection count above `CONNECTION_THRESHOLD`
+
+When an event is detected, it is logged into `STATE_DIR/detections.log`; if a top IP is identified and not whitelisted, it is blocked with iptables.
+
+#### `status`
+Prints runtime status including:
+- live counters (`TOTAL_DETECTIONS`, `TOTAL_BLOCKS`, `TOTAL_UNBLOCKS`)
+- active detections (recent detection count)
+- active blocks (`blocked_ips.txt`)
+
+#### `block <ip> [reason]`
+Manually blocks an IPv4 using iptables and records it in state.
+
+Examples:
+```bash
+./antiddos.sh block 203.0.113.15
+./antiddos.sh block 203.0.113.15 "manual review"
+```
+
+#### `unblock <ip>`
+Removes an existing iptables block and removes the IP from state tracking.
+
+Example:
+```bash
+./antiddos.sh unblock 203.0.113.15
+```
+
+#### `config validate`
+Validates configuration values and interface presence.
+
+Example:
+```bash
+./antiddos.sh config validate
+```
+
+#### `simulate [logfile]`
+Replays a test traffic log for dry-run style detection/block simulation (without changing iptables rules).
+
+Input format per line:
+
+```text
+<timestamp> <ip> <connections> <pps_bytes>
+```
+
+Example:
+```bash
+./antiddos.sh simulate tests/sample_traffic.log
+```
+
+## Configuration
+
+Edit `config/antiddos.conf` (copy from `.example`).
+
+All supported options:
+
+- `INTERFACE` — network interface to monitor (default: `eth0`)
+- `POLL_INTERVAL` — polling interval in seconds
+- `RX_THRESHOLD_BYTES` — detection threshold for received-byte delta per poll
+- `CONNECTION_THRESHOLD` — max allowed top-source established connections
+- `MONITORED_PORTS` — comma-separated ports used in connection analysis (e.g. `80,443`)
+- `WHITELISTED_IPS` — comma-separated IPv4 list never auto-blocked
+- `STATE_DIR` — persistent state dir (`counters.env`, `detections.log`, `blocked_ips.txt`)
+- `SIMULATE_LOG` — optional default log path for `simulate`
+
+You can override config location with:
+
+```bash
+ANTIDDOS_CONFIG=/path/to/antiddos.conf ./antiddos.sh status
+```
+
+## Deprecated flow (`run.sh`)
+
+`run.sh` no longer performs interactive script edits. It now:
+- prints migration guidance to config-driven usage
+- runs `./antiddos.sh config validate`
+
+## Systemd daemon example
+
+A sample unit file is available at:
+
+- `examples/antiddos.service`
+
+Install example:
+
+```bash
+sudo mkdir -p /opt/antiddos
+sudo cp -r . /opt/antiddos
+sudo cp /opt/antiddos/examples/antiddos.service /etc/systemd/system/antiddos.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now antiddos.service
+sudo systemctl status antiddos.service
+```
+
+## Notes
+
+- This project relies on Linux networking tools (`ss`, `iptables`) and root privileges for blocking/unblocking.
+- Validate config before starting in production.
